@@ -406,11 +406,14 @@ export default function CreateProperty() {
       navigate(`/landlord/properties/${id}?tab=overview`);
     } catch (err: any) {
       console.error("Submit failed:", err);
+      console.error("Error details:", err.response?.data);
 
-      if (err.response?.data?.message) {
-        toast.error(err.response.data.message);
-      } else {
-        toast.error("Something went wrong while creating the property.");
+      const errorMessage = err.response?.data?.message || err.message || "Something went wrong while creating the property.";
+      toast.error(errorMessage);
+      
+      // Log the full error for debugging
+      if (err.response?.data?.error) {
+        console.error("Backend error:", err.response.data.error);
       }
     }
   }

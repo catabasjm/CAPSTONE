@@ -83,7 +83,7 @@ const AdminLandlords = () => {
         page: filters.page,
         limit: filters.limit,
         role: "LANDLORD", // Only fetch landlords
-        status: filters.status || undefined,
+        status: filters.status ? filters.status.toUpperCase() : undefined,
         search: filters.search || undefined,
       });
       
@@ -126,7 +126,7 @@ const AdminLandlords = () => {
   const handleToggleStatus = async (userId: string, currentStatus: boolean) => {
     try {
       await toggleUserStatusRequest(userId);
-      toast.success(`Landlord ${currentStatus ? 'disabled' : 'enabled'} successfully`);
+      toast.success(`Landlord ${currentStatus ? 'enabled' : 'disabled'} successfully`);
       fetchLandlords(); // Refresh the list
     } catch (error: any) {
       console.error("Error toggling landlord status:", error);
@@ -156,21 +156,9 @@ const AdminLandlords = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Landlords</h1>
-          <p className="text-gray-600">Manage landlord accounts and their properties</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Shield className="h-4 w-4 mr-2" />
-            Bulk Actions
-          </Button>
-          <Button variant="outline" size="sm">
-            <FileText className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Landlords</h1>
+        <p className="text-gray-600">Manage landlord accounts and their properties</p>
       </div>
 
       {/* Stats Cards */}

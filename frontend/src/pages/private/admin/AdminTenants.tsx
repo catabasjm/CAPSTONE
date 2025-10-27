@@ -86,7 +86,7 @@ const AdminTenants = () => {
         page: filters.page,
         limit: filters.limit,
         role: "TENANT", // Only fetch tenants
-        status: filters.status || undefined,
+        status: filters.status ? filters.status.toUpperCase() : undefined,
         search: filters.search || undefined,
       });
       
@@ -135,7 +135,7 @@ const AdminTenants = () => {
   const handleToggleStatus = async (userId: string, currentStatus: boolean) => {
     try {
       await toggleUserStatusRequest(userId);
-      toast.success(`Tenant ${currentStatus ? 'disabled' : 'enabled'} successfully`);
+      toast.success(`Tenant ${currentStatus ? 'enabled' : 'disabled'} successfully`);
       fetchTenants(); // Refresh the list
     } catch (error: any) {
       console.error("Error toggling tenant status:", error);
@@ -164,21 +164,9 @@ const AdminTenants = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Tenants</h1>
-          <p className="text-gray-600">Manage tenant accounts and their lease information</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Shield className="h-4 w-4 mr-2" />
-            Bulk Actions
-          </Button>
-          <Button variant="outline" size="sm">
-            <FileText className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">Tenants</h1>
+        <p className="text-gray-600">Manage tenant accounts and their lease information</p>
       </div>
 
       {/* Stats Cards */}
@@ -361,10 +349,6 @@ const AdminTenants = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Mail className="h-4 w-4 mr-2" />
-                          Send Email
-                        </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => handleViewLease(tenant)}>
                           <Home className="h-4 w-4 mr-2" />
                           View Lease
@@ -647,7 +631,7 @@ const AdminTenants = () => {
             setSelectedTenantForLease(null);
           }}
           tenantId={selectedTenantForLease.id}
-          tenantName={`${selectedTenantForLease.firstName} ${selectedTenantForLease.lastName}`}
+          tenantName={selectedTenantForLease.name}
         />
       )}
     </div>

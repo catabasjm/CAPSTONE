@@ -85,7 +85,7 @@ const Verifications = () => {
         page: filters.page,
         limit: filters.limit,
         role: filters.role || undefined,
-        status: filters.status || undefined,
+        status: filters.status ? filters.status.toUpperCase() : undefined,
         search: filters.search || undefined,
       });
       
@@ -127,7 +127,7 @@ const Verifications = () => {
   const handleToggleStatus = async (userId: string, currentStatus: boolean) => {
     try {
       await toggleUserStatusRequest(userId);
-      toast.success(`User ${currentStatus ? 'disabled' : 'enabled'} successfully`);
+      toast.success(`User ${currentStatus ? 'enabled' : 'disabled'} successfully`);
       fetchUsers(); // Refresh the list
     } catch (error: any) {
       console.error("Error toggling user status:", error);
@@ -198,21 +198,9 @@ const Verifications = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Verifications</h1>
-          <p className="text-gray-600">Review and manage user account verifications</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Shield className="h-4 w-4 mr-2" />
-            Bulk Verify
-          </Button>
-          <Button variant="outline" size="sm">
-            <FileText className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">User Verifications</h1>
+        <p className="text-gray-600">Review and manage user account verifications</p>
       </div>
 
       {/* Stats Cards */}
@@ -386,11 +374,6 @@ const Verifications = () => {
                     </div>
                     
                     <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm">
-                        <Eye className="h-4 w-4 mr-2" />
-                        Review
-                      </Button>
-                      
                       {verificationStatus === 'PENDING' && (
                         <Button variant="outline" size="sm" className="text-green-600 hover:text-green-700">
                           <CheckCircle className="h-4 w-4 mr-2" />
@@ -405,14 +388,6 @@ const Verifications = () => {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Mail className="h-4 w-4 mr-2" />
-                            Send Email
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Shield className="h-4 w-4 mr-2" />
-                            View Documents
-                          </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleViewProfile(user)}>
                             <UserIcon className="h-4 w-4 mr-2" />
                             View Profile

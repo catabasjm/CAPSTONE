@@ -2,17 +2,14 @@ import { useState, useEffect } from "react";
 import { 
   Users, 
   Search, 
-  Filter, 
   MoreVertical, 
   UserCheck, 
   UserX, 
   Mail, 
   Calendar,
   Building2,
-  FileText,
   Eye,
   Shield,
-  AlertTriangle,
   User as UserIcon,
   CheckCircle,
   XCircle,
@@ -82,7 +79,7 @@ const AllUsers = () => {
         page: filters.page,
         limit: filters.limit,
         role: filters.role || undefined,
-        status: filters.status || undefined,
+        status: filters.status ? filters.status.toUpperCase() : undefined,
         search: filters.search || undefined,
       });
       
@@ -130,7 +127,7 @@ const AllUsers = () => {
   const handleToggleStatus = async (userId: string, currentStatus: boolean) => {
     try {
       await toggleUserStatusRequest(userId);
-      toast.success(`User ${currentStatus ? 'disabled' : 'enabled'} successfully`);
+      toast.success(`User ${currentStatus ? 'enabled' : 'disabled'} successfully`);
       fetchUsers(); // Refresh the list
     } catch (error: any) {
       console.error("Error toggling user status:", error);
@@ -169,21 +166,9 @@ const AllUsers = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">All Users</h1>
-          <p className="text-gray-600">Manage all system users and their accounts</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Shield className="h-4 w-4 mr-2" />
-            Bulk Actions
-          </Button>
-          <Button variant="outline" size="sm">
-            <FileText className="h-4 w-4 mr-2" />
-            Export
-          </Button>
-        </div>
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">All Users</h1>
+        <p className="text-gray-600">Manage all system users and their accounts</p>
       </div>
 
       {/* Stats Cards */}
@@ -372,10 +357,6 @@ const AllUsers = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
-                          <Mail className="h-4 w-4 mr-2" />
-                          Send Email
-                        </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleToggleStatus(user.id, user.isDisabled)}
                           className={user.isDisabled ? "text-green-600" : "text-red-600"}

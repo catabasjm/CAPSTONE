@@ -204,6 +204,31 @@ export const createProperty = async (req, res) => {
       });
     }
 
+    // --- Validate that city/municipality exists in database ---
+    if (cityId) {
+      const cityExists = await prisma.city.findUnique({
+        where: { id: cityId },
+      });
+      if (!cityExists) {
+        console.error(`City with ID ${cityId} does not exist in database`);
+        return res.status(400).json({
+          message: `Selected city does not exist. Please select a valid city from the dropdown.`,
+        });
+      }
+    }
+
+    if (municipalityId) {
+      const municipalityExists = await prisma.municipality.findUnique({
+        where: { id: municipalityId },
+      });
+      if (!municipalityExists) {
+        console.error(`Municipality with ID ${municipalityId} does not exist in database`);
+        return res.status(400).json({
+          message: `Selected municipality does not exist. Please select a valid municipality from the dropdown.`,
+        });
+      }
+    }
+
     // --- Validate institutions ---
     if (nearInstitutions && Array.isArray(nearInstitutions)) {
       if (nearInstitutions.length > 10) {
@@ -262,7 +287,13 @@ export const createProperty = async (req, res) => {
     }
 
     console.error("Error creating property:", error);
-    return res.status(500).json({ message: "Failed to create property" });
+    console.error("Error stack:", error.stack);
+    console.error("Request body:", req.body);
+    return res.status(500).json({ 
+      message: "Failed to create property",
+      error: error.message,
+      details: error.stack 
+    });
   }
 };
 
