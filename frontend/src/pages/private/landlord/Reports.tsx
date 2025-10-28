@@ -6,9 +6,7 @@ import {
   Users,
   Building2,
   DollarSign,
-  Calendar,
   Download,
-  Filter,
   PieChart,
   LineChart,
   Activity,
@@ -17,13 +15,14 @@ import {
   CheckCircle,
   Clock,
   Home,
-  MapPin,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import {
   getPropertyPerformanceReport,
   getFinancialTrendsReport,
@@ -78,13 +77,7 @@ const Reports = () => {
     }).format(amount);
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
+  // formatDate helper not currently used in this view
 
   const getRiskColor = (riskLevel: string) => {
     switch (riskLevel.toLowerCase()) {
@@ -96,6 +89,78 @@ const Reports = () => {
         return "bg-red-100 text-red-800 border-red-200";
       default:
         return "bg-gray-100 text-gray-800 border-gray-200";
+    }
+  };
+
+  const handleExportPdf = async () => {
+    try {
+      const input = document.getElementById("reports-export-root");
+      if (!input) {
+        toast.error("Export section not found");
+        return;
+      }
+      const canvas = await html2canvas(input, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+        useCORS: true,
+        foreignObjectRendering: true,
+        onclone: (doc) => {
+          const win = doc.defaultView;
+          if (!win) return;
+          const normalizeColorProp = (el: HTMLElement, cs: CSSStyleDeclaration, prop: string, fallback: string) => {
+            const val = (cs as any)[prop] as string | undefined;
+            if (val && typeof val === 'string' && val.includes('oklch')) {
+              (el.style as any)[prop] = fallback;
+            }
+          };
+          doc.querySelectorAll('*').forEach((node) => {
+            const el = node as HTMLElement;
+            const cs = win.getComputedStyle(el);
+            if (!cs) return;
+            normalizeColorProp(el, cs, 'backgroundColor', '#ffffff');
+            normalizeColorProp(el, cs, 'color', '#111111');
+            normalizeColorProp(el, cs, 'borderTopColor', '#e5e7eb');
+            normalizeColorProp(el, cs, 'borderRightColor', '#e5e7eb');
+            normalizeColorProp(el, cs, 'borderBottomColor', '#e5e7eb');
+            normalizeColorProp(el, cs, 'borderLeftColor', '#e5e7eb');
+            // remove shadows that may include oklch
+            const boxShadow = cs.boxShadow || '';
+            if (boxShadow.includes('oklch')) {
+              el.style.boxShadow = 'none';
+            }
+            // background shorthand and images
+            const bgImage = cs.backgroundImage || '';
+            if (bgImage && (bgImage.includes('oklch') || bgImage.includes('gradient'))) {
+              el.style.backgroundImage = 'none';
+            }
+            const bg = cs.background || '';
+            if (bg.includes('oklch')) {
+              el.style.background = '#ffffff';
+            }
+            // SVG specific: fill and stroke
+            if (el instanceof SVGElement) {
+              const svgEl = el as unknown as SVGElement & { style: any };
+              const fill = cs.fill || (svgEl.getAttribute('fill') || '');
+              const stroke = cs.stroke || (svgEl.getAttribute('stroke') || '');
+              if (!fill || fill.includes('oklch')) {
+                svgEl.style.fill = '#111111';
+                svgEl.setAttribute('fill', '#111111');
+              }
+              if (!stroke || stroke.includes('oklch')) {
+                svgEl.style.stroke = '#111111';
+                svgEl.setAttribute('stroke', '#111111');
+              }
+            }
+          });
+        },
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF({ orientation: "landscape", unit: "px", format: [canvas.width, canvas.height] });
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      pdf.save(`reports-${activeTab}-${new Date().toISOString().split('T')[0]}.pdf`);
+    } catch (err) {
+      console.error("Export error:", err);
+      toast.error("Failed to export PDF");
     }
   };
 
@@ -126,7 +191,7 @@ const Reports = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div id="reports-export-root" className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
@@ -144,7 +209,7 @@ const Reports = () => {
               <SelectItem value="year">Yearly</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleExportPdf}>
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>

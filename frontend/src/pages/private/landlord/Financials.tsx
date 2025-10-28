@@ -4,7 +4,6 @@ import {
   TrendingUp,
   TrendingDown,
   Plus,
-  Download,
   Trash2,
   Building2,
   AlertCircle,
@@ -79,7 +78,7 @@ const Financials = () => {
       setIncomeRecords(incomeData.incomeRecords || []);
       setExpenseRecords(expenseData.expenseRecords || []);
       console.log("Properties data:", propertiesData); // Debug log
-      setProperties(propertiesData || []);
+      setProperties(Array.isArray(propertiesData) ? propertiesData : (propertiesData?.data || []));
     } catch (error) {
       console.error("Error fetching financial data:", error);
       toast.error("Failed to fetch financial data");
@@ -198,10 +197,7 @@ const Financials = () => {
               <SelectItem value="year">This Year</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
-            Export
-          </Button>
+          {/* Export button removed */}
         </div>
       </div>
 
@@ -472,10 +468,7 @@ const Financials = () => {
               </DialogContent>
             </Dialog>
 
-            <Button variant="outline" className="w-full">
-              <Download className="h-4 w-4 mr-2" />
-              Export Report
-            </Button>
+              {/* Export Report button removed */}
           </CardContent>
         </Card>
       </div>
