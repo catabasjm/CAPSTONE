@@ -92,6 +92,9 @@ const BrowseProperties = lazy(
 const TenantPropertyDetails = lazy(
   () => import("./pages/private/tenant/PropertyDetails")
 );
+const TenantSettings = lazy(
+  () => import("./pages/private/tenant/Settings")
+);
 
 // Private pages - Admin
 const AdminDashboard = lazy(
@@ -140,6 +143,9 @@ const Financials = lazy(() => import("./pages/private/landlord/Financials"));
 
 // Reports pages
 const Reports = lazy(() => import("./pages/private/landlord/Reports"));
+const LandlordSettings = lazy(
+  () => import("./pages/private/landlord/Settings")
+);
 
 // Fallbacks
 const NotFound = lazy(() => import("./pages/fallbacks/NotFound"));
@@ -459,6 +465,14 @@ const router = createBrowserRouter([
           </Suspense>
         ),
       },
+      {
+        path: "settings",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <LandlordSettings />
+          </Suspense>
+        ),
+      },
     ],
   },
   {
@@ -524,6 +538,14 @@ const router = createBrowserRouter([
         element: (
           <Suspense fallback={<Loader />}>
             <TenantPropertyDetails />
+          </Suspense>
+        ),
+      },
+      {
+        path: "settings",
+        element: (
+          <Suspense fallback={<Loader />}>
+            <TenantSettings />
           </Suspense>
         ),
       },
