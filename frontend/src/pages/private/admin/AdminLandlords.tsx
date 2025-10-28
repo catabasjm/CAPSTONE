@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { 
   Building2, 
   Search, 
@@ -55,6 +56,7 @@ import {
 } from "@/api/adminApi";
 
 const AdminLandlords = () => {
+  const navigate = useNavigate();
   const [landlords, setLandlords] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [pagination, setPagination] = useState({
@@ -120,6 +122,23 @@ const AdminLandlords = () => {
   const handleViewProfile = (user: User) => {
     setSelectedUser(user);
     setIsProfileModalOpen(true);
+  };
+
+  // Handle view properties of landlord
+  const handleViewProperties = (user: User) => {
+    const params = new URLSearchParams({ search: user.name || user.email || "" });
+    navigate(`/admin/properties?${params.toString()}`);
+  };
+
+  // Handle send email to landlord
+  const handleSendEmail = (email: string) => {
+    if (!email) return;
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`;
+    const w = window.open(gmailUrl, "_blank");
+    // Fallback to mailto if popup blocked or Gmail not available
+    if (!w) {
+      window.location.href = `mailto:${email}`;
+    }
   };
 
   // Handle toggle landlord status
@@ -339,11 +358,11 @@ const AdminLandlords = () => {
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onSelect={(e) => { e.preventDefault(); handleSendEmail(landlord.email); }}>
                           <Mail className="h-4 w-4 mr-2" />
                           Send Email
                         </DropdownMenuItem>
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onSelect={(e) => { e.preventDefault(); handleViewProperties(landlord); }}>
                           <Building2 className="h-4 w-4 mr-2" />
                           View Properties
                         </DropdownMenuItem>
