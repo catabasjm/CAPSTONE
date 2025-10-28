@@ -328,10 +328,6 @@ const AdminTenants = () => {
                           <FileText className="h-3 w-3" />
                           <span>{tenant.leasesCount} lease(s)</span>
                         </div>
-                        <div className="flex items-center gap-1">
-                          <CreditCard className="h-3 w-3" />
-                          <span>Payment history</span>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -352,10 +348,6 @@ const AdminTenants = () => {
                         <DropdownMenuItem onClick={() => handleViewLease(tenant)}>
                           <Home className="h-4 w-4 mr-2" />
                           View Lease
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>
-                          <CreditCard className="h-4 w-4 mr-2" />
-                          Payment History
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() => handleToggleStatus(tenant.id, tenant.isDisabled)}
