@@ -381,35 +381,37 @@ const Verifications = () => {
                         </Button>
                       )}
                       
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => handleViewProfile(user)}>
-                            <UserIcon className="h-4 w-4 mr-2" />
-                            View Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() => handleToggleStatus(user.id, user.isDisabled)}
-                            className={user.isDisabled ? "text-green-600" : "text-red-600"}
-                          >
-                            {user.isDisabled ? (
-                              <>
-                                <UserCheck className="h-4 w-4 mr-2" />
-                                Enable User
-                              </>
-                            ) : (
-                              <>
-                                <UserX className="h-4 w-4 mr-2" />
-                                Disable User
-                              </>
-                            )}
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                      {user.role !== 'ADMIN' && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleViewProfile(user)}>
+                              <UserIcon className="h-4 w-4 mr-2" />
+                              View Profile
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                              onClick={() => handleToggleStatus(user.id, user.isDisabled)}
+                              className={user.isDisabled ? "text-green-600" : "text-red-600"}
+                            >
+                              {user.isDisabled ? (
+                                <>
+                                  <UserCheck className="h-4 w-4 mr-2" />
+                                  Enable User
+                                </>
+                              ) : (
+                                <>
+                                  <UserX className="h-4 w-4 mr-2" />
+                                  Disable User
+                                </>
+                              )}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      )}
                     </div>
                   </div>
                 );

@@ -7,7 +7,6 @@ import {
   FileText,
   BarChart3,
   DollarSign,
-  Settings as SettingsIcon,
   LogOut,
   Bell,
   Menu,
@@ -138,7 +137,6 @@ const breadcrumbConfig: Record<string, { name: string; parent?: string }> = {
   "/admin/transactions": { name: "Transactions" },
   "/admin/reports": { name: "Reports" },
   "/admin/system-logs": { name: "System Logs" },
-  "/admin/settings": { name: "Settings" },
 };
 
 // Components
@@ -243,14 +241,6 @@ const Sidebar = ({
         >
           <Users className="h-4 w-4" />
           <span>Account Profile</span>
-        </Link>
-        <Link
-          to="/admin/settings"
-          onClick={onClose}
-          className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors"
-        >
-          <SettingsIcon className="h-4 w-4" />
-          <span>Settings</span>
         </Link>
         <button
           onClick={handleLogout}
