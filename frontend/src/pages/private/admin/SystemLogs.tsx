@@ -543,34 +543,32 @@ const SystemLogs = () => {
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" onClick={() => handleViewLog(log)}>
-                        <Eye className="h-4 w-4 mr-2" />
-                        View
-                      </Button>
-                      
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <User className="h-4 w-4 mr-2" />
-                            View Profile
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Activity className="h-4 w-4 mr-2" />
-                            Activity History
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Building2 className="h-4 w-4 mr-2" />
-                            View Properties
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </div>
+                    {log.role !== 'ADMIN' && (
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" onClick={() => handleViewLog(log)}>
+                          <Eye className="h-4 w-4 mr-2" />
+                          View
+                        </Button>
+                        
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                              <Activity className="h-4 w-4 mr-2" />
+                              Activity History
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                              <Building2 className="h-4 w-4 mr-2" />
+                              View Properties
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
