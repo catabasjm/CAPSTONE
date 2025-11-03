@@ -2,15 +2,12 @@ import { useState, useEffect } from "react";
 import { 
   Building2, 
   Search, 
-  Filter, 
   MoreVertical, 
   Eye, 
   MapPin,
   Calendar,
   User,
   Home,
-  DollarSign,
-  AlertTriangle,
   CheckCircle,
   XCircle,
   Clock,
@@ -394,28 +391,6 @@ const AllProperties = () => {
                         <Eye className="h-4 w-4 mr-2" />
                         View
                       </Button>
-                      
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm">
-                            <MoreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuItem>
-                            <Building2 className="h-4 w-4 mr-2" />
-                            View Units
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <User className="h-4 w-4 mr-2" />
-                            Contact Owner
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Wrench className="h-4 w-4 mr-2" />
-                            Maintenance History
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
                     </div>
                   </div>
                 </div>
