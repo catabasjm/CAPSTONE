@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { 
   Users, 
   Building2, 
-  FileText, 
-  DollarSign, 
+  FileText,  
   TrendingUp, 
   TrendingDown,
   Activity,
@@ -108,7 +107,7 @@ const AdminDashboard = () => {
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline">
-            <Link to="/admin/analytics">
+            <Link to="/admin/reports">
               <BarChart3 className="h-4 w-4 mr-2" />
               View Analytics
             </Link>

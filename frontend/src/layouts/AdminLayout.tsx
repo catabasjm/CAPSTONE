@@ -14,7 +14,6 @@ import {
   Shield,
   UserCheck,
   TrendingUp,
-  AlertTriangle,
   Database,
   Activity,
   Trash2,
@@ -39,11 +38,6 @@ const sidebarConfig = [
         path: "/admin",
         name: "Dashboard",
         icon: LayoutDashboard,
-      },
-      {
-        path: "/admin/analytics",
-        name: "Analytics",
-        icon: BarChart3,
       },
     ],
   },
@@ -111,7 +105,7 @@ const sidebarConfig = [
     items: [
       {
         path: "/admin/reports",
-        name: "Reports",
+        name: "Reports & Analytics",
         icon: BarChart3,
       },
       {
@@ -126,7 +120,6 @@ const sidebarConfig = [
 // Breadcrumb configuration
 const breadcrumbConfig: Record<string, { name: string; parent?: string }> = {
   "/admin": { name: "Dashboard" },
-  "/admin/analytics": { name: "Analytics" },
   "/admin/users": { name: "All Users" },
   "/admin/landlords": { name: "Landlords" },
   "/admin/tenants": { name: "Tenants" },
@@ -135,7 +128,7 @@ const breadcrumbConfig: Record<string, { name: string; parent?: string }> = {
   "/admin/property-requests": { name: "Property Requests" },
   "/admin/payments": { name: "All Payments" },
   "/admin/transactions": { name: "Transactions" },
-  "/admin/reports": { name: "Reports" },
+  "/admin/reports": { name: "Reports & Analytics" },
   "/admin/system-logs": { name: "System Logs" },
 };
 
